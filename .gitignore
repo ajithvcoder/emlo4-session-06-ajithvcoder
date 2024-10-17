@@ -8,3 +8,4 @@ infer_images/*
 .covera*
 .pytest_cache
 htmlcov*
+/data
