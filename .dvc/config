@@ -4,5 +4,5 @@
 ['remote "gdrive"']
     url = gdrive://1bISp68ltUO1LG2cjkliTo91vtgJiHyNP
     gdrive_acknowledge_abuse = true
-    gdrive_client_id = 671072716151-umsj0in8mutie9jlkvmeu2g8ib7c7dos.apps.googleusercontent.com
-    gdrive_client_secret = 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
+    gdrive_client_id = 671072716151-i87dpktu216jqnk4m06vjc49mtf53u2m.apps.googleusercontent.com
+    gdrive_client_secret = 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
