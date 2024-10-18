@@ -4,21 +4,15 @@ stages:
     deps:
     - configs/experiment/catdog_ex.yaml
     - src/train.py
-    outs:
-    - logs/train
   test:
-    cmd: python src/eval.py --config-name=eval experiment=catdog_ex
+    cmd: python src/eval.py --config-name=eval experiment=catdog_ex_eval
     deps:
-    - configs/experiment/catdog_ex.yaml
+    - configs/experiment/catdog_ex_eval.yaml
     - src/eval.py
-    outs:
-    - logs/eval
   infer:
-    cmd: python src/infer.py --config-name=infer experiment=catdog_ex
+    cmd: python src/infer.py --config-name=infer experiment=catdog_ex_eval
     deps:
-    - configs/experiment/catdog_ex.yaml
+    - configs/experiment/catdog_ex_eval.yaml
     - src/infer.py
-    outs:
-    - logs/infer
   report_genration:
     cmd: python scripts/metrics_fetch.py
