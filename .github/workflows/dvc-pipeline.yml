@@ -32,6 +32,10 @@ jobs:
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
+          uv run dvc cache clean
+          rm -rf .dvc/cache
+          dvc remote list
+          dvc remote verify myremote
           uv run dvc pull -r myremote -v
 
       - name: Train model
