@@ -34,7 +34,7 @@ jobs:
         run: |
           rm -rf .dvc/cache
           uv run dvc remote list
-          uv run dvc pull -r myremote -v
+          uv run dvc pull data -r myremote -v
 
       - name: Train model
         run: |
