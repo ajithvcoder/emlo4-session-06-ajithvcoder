@@ -33,7 +33,7 @@ jobs:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
           rm -rf .dvc/cache
-          dvc remote list
+          uv run dvc remote list
           uv run dvc pull -r myremote -v
 
       - name: Train model
