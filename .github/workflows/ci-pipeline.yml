@@ -16,16 +16,17 @@ permissions:        # Define permissions for this workflow
 
 jobs:
   data-setup:
-    uses: ./.github/workflows/data-setup.yml
-    secrets: inherit  # If you need to pass secrets to the build workflow
-  build:
-    uses: ./.github/workflows/docker-build.yml
+    uses: ./.github/workflows/dvc-pipeline.yml
     secrets: inherit  # If you need to pass secrets to the build workflow
 
-  test:
-    uses: ./.github/workflows/docker-test.yml
-    needs: build  # This ensures that the test job runs after the build job
-    secrets: inherit  # If you need to pass secrets to the test workflow
-    with:
-        min_accuracy: '0.95'  # Provide the input value here
-        docker_image: 'ghcr.io/ajithvcoder/emlo4-session-05-ajithvcoder:latest'
+  # build:
+  #   uses: ./.github/workflows/docker-build.yml
+  #   secrets: inherit  # If you need to pass secrets to the build workflow
+
+  # test:
+  #   uses: ./.github/workflows/docker-test.yml
+  #   needs: build  # This ensures that the test job runs after the build job
+  #   secrets: inherit  # If you need to pass secrets to the test workflow
+  #   with:
+  #       min_accuracy: '0.95'  # Provide the input value here
+  #       docker_image: 'ghcr.io/ajithvcoder/emlo4-session-05-ajithvcoder:latest'
