@@ -3,7 +3,7 @@ from typing import Union, Tuple, List
 import os
 
 import lightning as L
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader, random_split, Subset
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from torchvision.datasets.utils import download_and_extract_archive
@@ -79,6 +79,12 @@ class CatDogImageDataModule(L.LightningDataModule):
     def create_dataset(self, root, transform):
         return CustomImageFolder(root=root, transform=transform)
 
+    def reduce_data_debug(self, original_subset, reduce_number):
+        original_indices = original_subset.indices
+        new_indices = original_indices[:reduce_number]
+        new_subset = Subset(original_subset.dataset, new_indices)
+        return new_subset
+
     def setup(self, stage: str = None):
         if self._train_dataset is None:
             train_data = self.create_dataset(
@@ -90,6 +96,11 @@ class CatDogImageDataModule(L.LightningDataModule):
             self._train_dataset, self._val_dataset = random_split(
                 train_data, [train_size, val_size]
             )
+            # Todo remove after debugging
+            # print(type(self._train_dataset))
+            # print(self._train_dataset)
+            self._train_dataset, self._val_dataset = self.reduce_data_debug(self._train_dataset, 500), \
+                    self.reduce_data_debug(self._val_dataset, 50)
 
         if self._test_dataset is None:
             self._test_dataset = self.create_dataset(

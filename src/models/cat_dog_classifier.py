@@ -4,6 +4,10 @@ import torch
 import torch.nn.functional as F
 from torch import optim
 from torchmetrics import Accuracy
+from torchmetrics.classification import MulticlassConfusionMatrix
+import matplotlib.pyplot as plt
+import os
+from glob import glob
 
 class CatDogClassifier(L.LightningModule):
     def __init__(self, base_model: str = "resnet18", num_classes: int = 10, lr: float = 1e-3):
@@ -18,6 +22,8 @@ class CatDogClassifier(L.LightningModule):
         self.train_acc = Accuracy(task="multiclass", num_classes=self.num_classes)
         self.val_acc = Accuracy(task="multiclass", num_classes=self.num_classes)
         self.validation_step_outputs = []
+        self.train_confusion =  MulticlassConfusionMatrix(num_classes=2)
+        self.test_confusion =  MulticlassConfusionMatrix(num_classes=2)
 
         self.save_hyperparameters()
 
@@ -30,9 +36,23 @@ class CatDogClassifier(L.LightningModule):
         loss = F.cross_entropy(logits, y)
         preds = F.softmax(logits, dim=1)
         self.train_acc(preds, y)
-        self.log("train_loss", loss, prog_bar=True)
-        self.log("train_acc", self.train_acc, prog_bar=True)
+        self.log("train_loss", loss, prog_bar=True, on_epoch=True)
+        self.log("train_acc", self.train_acc, prog_bar=True, on_epoch=True)
         return loss
+
+    def on_train_epoch_end(self):
+        print('CONFUSION_MATRIX:', self.train_confusion.compute())
+        fig_, ax_ = self.train_confusion.plot()
+        
+        # Find the most recent metrics.csv file
+        eval_log_files = glob("logs/train/runs/*/train.log")
+        latest_eval_log = max(eval_log_files, key=os.path.getctime)
+        log_path = latest_eval_log.split("/train.log")[0]
+        print("log_path-", log_path)
+        fig_.savefig(os.path.join(log_path, "train_confusion_matrix.png"))
+
+        # Optionally, you can close the figure to free up memory
+        plt.close(fig_)
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
@@ -40,8 +60,8 @@ class CatDogClassifier(L.LightningModule):
         loss = F.cross_entropy(logits, y)
         preds = F.softmax(logits, dim=1)
         self.val_acc(preds, y)
-        self.log("val_loss", loss, prog_bar=True)
-        self.log("val_acc", self.val_acc, prog_bar=True)
+        self.log("val_loss", loss, prog_bar=True, on_epoch=True)
+        self.log("val_acc", self.val_acc, prog_bar=True, on_epoch=True)
     
     def predict_step(self, batch, batch_idx):
         # print(batch[0])
@@ -67,9 +87,26 @@ class CatDogClassifier(L.LightningModule):
         logits = self(x)
         loss = F.cross_entropy(logits, y)
         preds = F.softmax(logits, dim=1)
+        preds_conf = torch.argmax(preds, dim=1)
         self.val_acc(preds, y)
-        self.log("test_loss", loss, prog_bar=True)
-        self.log("test_acc", self.val_acc, prog_bar=True)
+        self.test_confusion(preds_conf, y)
+        self.log("test_loss", loss, prog_bar=True, on_epoch=True)
+        self.log("test_acc", self.val_acc, prog_bar=True, on_epoch=True)
+    
+    def on_test_epoch_end(self):
+        print('CONFUSION_MATRIX:', self.test_confusion.compute())
+        fig_, ax_ = self.test_confusion.plot()
+        
+        # Find the most recent metrics.csv file
+        eval_log_files = glob("logs/eval/runs/*/eval.log")
+        latest_eval_log = max(eval_log_files, key=os.path.getctime)
+        log_path = latest_eval_log.split("/eval.log")[0]
+        print("log_path-", log_path)
+        fig_.savefig(os.path.join(log_path, "test_confusion_matrix.png"))
+
+        # Optionally, you can close the figure to free up memory
+        plt.close(fig_)
+
 
     def configure_optimizers(self):
         return optim.Adam(self.parameters(), lr=self.lr)
