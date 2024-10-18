@@ -36,6 +36,7 @@ class CatDogClassifier(L.LightningModule):
         loss = F.cross_entropy(logits, y)
         preds = F.softmax(logits, dim=1)
         self.train_acc(preds, y)
+        self.train_confusion(preds, y)
         self.log("train_loss", loss, prog_bar=True, on_epoch=True)
         self.log("train_acc", self.train_acc, prog_bar=True, on_epoch=True)
         return loss

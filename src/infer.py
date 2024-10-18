@@ -50,7 +50,8 @@ def annotate_images(data_list, class_names, output_path):
     for tensor, (image_path,) in data_list:
         class_id = tensor.item()
         class_name = class_names.get(class_id, 'Unknown')
-
+        # print(image_path)
+        actual_category = os.path.basename(os.path.dirname(image_path))
         try:
             image = Image.open(image_path)
         except IOError:
@@ -58,8 +59,9 @@ def annotate_images(data_list, class_names, output_path):
             continue
 
         draw = ImageDraw.Draw(image)
-        font = ImageFont.load_default()
-        draw.text((10, 10), class_name, fill="red", font=font)
+        font = ImageFont.truetype("/workspace/assets/font/Arial.ttf", 20)
+        draw.text((10, 10),"Predicted - " +class_name, fill="red", font=font)
+        draw.text((10, 60), "Actual - " + actual_category, fill="red", font=font)
         result_path = os.path.join(output_path, os.path.basename(image_path))
 
         result_path = result_path.replace('.jpg', '_annotated.jpg')
@@ -92,7 +94,7 @@ def infer_task(
 def infer(cfg: DictConfig):
     log_dir = Path(cfg.paths.log_dir)
     
-    setup_logger(log_dir/"eval_log.log")
+    setup_logger(log_dir/"infer_log.log")
 
     # Set seed for reproducibility
     seed_everything(42)
