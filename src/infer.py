@@ -60,7 +60,7 @@ def annotate_images(data_list, class_names, output_path):
             continue
 
         draw = ImageDraw.Draw(image)
-        font = ImageFont.truetype("/workspace/assets/font/Arial.ttf", 20)
+        font = ImageFont.truetype("./assets/font/Arial.ttf", 20)
         draw.text((10, 10),"Predicted - " +class_name, fill="red", font=font)
         draw.text((10, 60), "Actual - " + actual_category, fill="red", font=font)
         result_path = os.path.join(output_path, os.path.basename(image_path))
