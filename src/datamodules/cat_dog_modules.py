@@ -59,7 +59,7 @@ class CatDogImageDataModule(L.LightningDataModule):
         batch_size: int = 8,
         splits: Tuple[float, float, float] = (0.8, 0.1, 0.1),
         pin_memory: bool = False,
-        samples: int = 5, filenames: List = [], classes: dict = {}
+        samples: int = 10, filenames: List = [], classes: dict = {}
     ):
         super().__init__()
         self._data_dir = Path(dl_path)
@@ -158,7 +158,7 @@ class CatDogImageDataModule(L.LightningDataModule):
             self._infer_dataset = self.create_infer_dataset(self.data_path / "test",
                         self._filenames,
                         self.valid_transform)
-            self._batch_size =  1
+            # self._batch_size =  1
 
 
     def __dataloader(self, dataset, shuffle: bool = False):
@@ -180,4 +180,5 @@ class CatDogImageDataModule(L.LightningDataModule):
         return self.__dataloader(self._test_dataset)
     
     def predict_dataloader(self):
+        self._batch_size =  1
         return self.__dataloader(self._infer_dataset)  # Using validation dataset for testing
