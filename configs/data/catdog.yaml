@@ -1,8 +1,8 @@
 _target_: src.datamodules.cat_dog_modules.CatDogImageDataModule
 
-dl_path: ${paths.data_dir}/dataset_catdog
+dl_path: ${paths.data_dir}/cat_dog_medium
 num_workers: 0
-batch_size: 64
+batch_size: 256
 splits: [0.8, 0.1, 0.1]
 pin_memory: False
 filenames: ["Golden Retriever_12.jpg", "Beagle_7.jpg", "Golden Retriever_58.jpg", "Beagle_72.jpg", "Beagle_88.jpg"]

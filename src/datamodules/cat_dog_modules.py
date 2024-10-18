@@ -8,6 +8,19 @@ from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from torchvision.datasets.utils import download_and_extract_archive
 
+class CustomImageFolder(ImageFolder):
+    def __getitem__(self, index):
+        path, target = self.samples[index]
+        try:
+            sample = self.loader(path)
+            if self.transform is not None:
+                sample = self.transform(sample)
+            if self.target_transform is not None:
+                target = self.target_transform(target)
+        except Exception as e:
+            print(f"Skipping corrupted or unreadable file: {path}")
+            return self.__getitem__((index + 1) % len(self.samples))  # Skip to the next image
+        return sample, target
 
 class CatDogImageDataModule(L.LightningDataModule):
     def __init__(
@@ -25,17 +38,12 @@ class CatDogImageDataModule(L.LightningDataModule):
         self._batch_size = batch_size
         self._splits = splits
         self._pin_memory = pin_memory
-        self._dataset = None
+        self._train_dataset = None
+        self._val_dataset = None
+        self._test_dataset = None
 
     def prepare_data(self):
-        """Download images if not already downloaded and extracted."""
-        dataset_path = self.data_path / "cats_and_dogs_filtered"
-        if not dataset_path.exists():
-            download_and_extract_archive(
-                url="https://storage.googleapis.com/mledu-datasets/cats_and_dogs_filtered.zip",
-                download_root=self._data_dir,
-                remove_finished=True,
-            )
+        pass
 
     @property
     def data_path(self):
@@ -69,20 +77,26 @@ class CatDogImageDataModule(L.LightningDataModule):
         )
 
     def create_dataset(self, root, transform):
-        return ImageFolder(root=root, transform=transform)
+        return CustomImageFolder(root=root, transform=transform)
 
     def setup(self, stage: str = None):
-        if self._dataset is None:
-            self._dataset = self.create_dataset(
-                self.data_path / "cats_and_dogs_filtered" / "train",
+        if self._train_dataset is None:
+            train_data = self.create_dataset(
+                self.data_path / "train",
                 self.train_transform,
             )
-            train_size = int(self._splits[0] * len(self._dataset))
-            val_size = int(self._splits[1] * len(self._dataset))
-            test_size = len(self._dataset) - train_size - val_size
-            self.train_dataset, self.val_dataset, self.test_dataset = random_split(
-                self._dataset, [train_size, val_size, test_size]
+            train_size = int(self._splits[0] * len(train_data))
+            val_size = len(train_data) - train_size
+            self._train_dataset, self._val_dataset = random_split(
+                train_data, [train_size, val_size]
             )
+
+        if self._test_dataset is None:
+            self._test_dataset = self.create_dataset(
+                self.data_path / "test",
+                self.valid_transform,
+            )
+
 
     def __dataloader(self, dataset, shuffle: bool = False):
         return DataLoader(
@@ -94,10 +108,10 @@ class CatDogImageDataModule(L.LightningDataModule):
         )
 
     def train_dataloader(self):
-        return self.__dataloader(self.train_dataset, shuffle=True)
+        return self.__dataloader(self._train_dataset, shuffle=True)
 
     def val_dataloader(self):
-        return self.__dataloader(self.val_dataset)
+        return self.__dataloader(self._val_dataset)
 
     def test_dataloader(self):
-        return self.__dataloader(self.test_dataset)
+        return self.__dataloader(self._test_dataset)

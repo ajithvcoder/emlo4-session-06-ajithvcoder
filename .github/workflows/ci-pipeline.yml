@@ -15,6 +15,9 @@ permissions:        # Define permissions for this workflow
   contents: read    # Allow reading repository contents
 
 jobs:
+  data-setup:
+    uses: ./.github/workflows/data-setup.yml
+    secrets: inherit  # If you need to pass secrets to the build workflow
   build:
     uses: ./.github/workflows/docker-build.yml
     secrets: inherit  # If you need to pass secrets to the build workflow
