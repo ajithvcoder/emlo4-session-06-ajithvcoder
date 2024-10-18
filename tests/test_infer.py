@@ -16,7 +16,7 @@ def config():
     with hydra.initialize(version_base=None, config_path="../configs"):
         cfg = hydra.compose(
             config_name="infer",
-            overrides=["callbacks.model_checkpoint.filename=/workspace/model_storage/epoch-checkpoint.ckpt"],
+            overrides=["callbacks.model_checkpoint.filename=/home/runner/work/emlo4-session-06-ajithvcoder/emlo4-session-06-ajithvcoder/model_storage/epoch-checkpoint.ckpt"],
         )
         return cfg
 

@@ -26,8 +26,8 @@ jobs:
           uv venv .venv
           echo "$PWD"
           source .venv/bin/activate
-          #uv pip install -r pyproject.toml --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu
           uv sync --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu
+          mkdir data
       - name: Pull data from DVC
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
