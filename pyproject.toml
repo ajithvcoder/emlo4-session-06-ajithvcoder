@@ -8,7 +8,7 @@ dependencies = [
     "black>=24.8.0",
     "dvc-gdrive>=3.0.1",
     "dvc>=3.55.2",
-    "dvc[gs]==3.38.0",
+    "dvc[gs]",
     "lightning[extra]==2.4.0",
     "loguru>=0.7.2",
     "rich>=13.8.1",
