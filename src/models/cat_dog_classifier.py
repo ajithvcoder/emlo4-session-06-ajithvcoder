@@ -10,13 +10,13 @@ import os
 from glob import glob
 
 class CatDogClassifier(L.LightningModule):
-    def __init__(self, base_model: str = "resnet18", num_classes: int = 10, lr: float = 1e-3):
+    def __init__(self, base_model: str = "resnet18", pretrained=False, num_classes: int = 10, lr: float = 1e-3, **kwargs):
         super().__init__()
         self.lr = lr
         self.num_classes = num_classes
 
         # Load pre-trained ResNet18 model
-        self.model = timm.create_model(base_model, pretrained=True, num_classes=self.num_classes)
+        self.model = timm.create_model(base_model, pretrained=pretrained, num_classes=self.num_classes, **kwargs)
 
         # Multi-class accuracy with num_classes=2
         self.train_acc = Accuracy(task="multiclass", num_classes=self.num_classes)
