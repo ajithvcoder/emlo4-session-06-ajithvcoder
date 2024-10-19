@@ -9,7 +9,7 @@
     - [DVC Integration with Google Cloud Storage](#dvc-integration-with-google-cloud-storage)
     - [Integrate Comet ML](#integrate-comet-ml)
     - [Github Actions with DVC Pipeline for training](#github-actions-with-dvc-pipeline-for-training)
-    - [Train-Test_infer-Comment-CML](#train-test_infer-comment-cml)
+    - [Train-Test-Infer-Comment-CML](#train-test-infer-comment-cml)
 - [Learnings](#learnings)
 - [Results Screenshots](#results)
 
@@ -94,7 +94,7 @@ and revokes the credentials.
 ### Integrate Comet ML
 
 - Comet-ML is already inegrated with pytorch lighting so we just need to add config files in "logger" folder and use proper api key for it.
-![comet ml dashboard](./assets/snap_comet_ml.png)
+
 
 
 ### Github Actions with DVC Pipeline for training
@@ -102,11 +102,11 @@ and revokes the credentials.
 - setup cml, uv packages using github actions and install `python=3.12`
 - Copy the contents of credentials.json and store in github reprository secrets with name `GDRIVE_CREDENTIALS_DATA`
 
-### Train-Test_infer-Comment-CML
+### Train-Test-Infer-Comment-CML
 
 **Debugging and development**
 
-use a subset of train and test set for faster debugging and development. Also u can reduce the configs of model to generate a 3million param model
+Use a subset of train and test set for faster debugging and development. Also u can reduce the configs of model to generate a `custom 3 million param vit model`. I have reduced from 5 million params to 3 million params by using the config. However to run the pretrained model we can change this config.
 
 **Overall Run**
 - `dvc repro`
@@ -122,7 +122,7 @@ use a subset of train and test set for faster debugging and development. Also u 
 
 **Create CML report**
 
-- install cml pacakge
+- Install cml pacakge
 - `python scripts/metrics_fetch.py` will fetch the necessary files needed for report and place it in root folder
 - `report_gen.sh`collects and appends every metric to readme file
 - cml tool is used to comment in github and it internally uses github token to authorize
@@ -139,12 +139,19 @@ use a subset of train and test set for faster debugging and development. Also u 
 
 ### Results
 
+**Comet-ML Dashboard**
+
+![comet ml dashboard](./assets/snap_comet_ml.png)
+
 **Work flow success on main branch**
 
 **Work flow success run on PR branch**
 
-**Comments from cml**
+**Comments from cml with plots and 10 infer images**
 
+
+Note: I used Google cloud Storage bucket for this project and its paid one so after successfully completing this assignment i am going
+to remote it. So you need to do the cloud setup again for re-running this experiment.
 
 ### Group Members
 
