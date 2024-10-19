@@ -50,7 +50,7 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Generate acc, loss plots and confusion matrix table plots
+          # Generate acc, loss plots and confusion matrix table plot
           rm report.md
           sh report_gen.sh
           cml comment create report.md
