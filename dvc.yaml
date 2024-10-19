@@ -1,6 +1,6 @@
 stages:
   train:
-    cmd: python src/train.py --config-name=train experiment=catdog_ex trainer.max_epochs=2
+    cmd: python src/train.py --config-name=train experiment=catdog_ex trainer.max_epochs=5
     deps:
     - configs/experiment/catdog_ex.yaml
     - src/train.py

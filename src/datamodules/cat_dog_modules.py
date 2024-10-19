@@ -133,8 +133,8 @@ class CatDogImageDataModule(L.LightningDataModule):
             # Todo remove after debugging
             # print(type(self._train_dataset))
             # print(self._train_dataset)
-            self._train_dataset, self._val_dataset = self.reduce_data_debug(self._train_dataset, 500), \
-                    self.reduce_data_debug(self._val_dataset, 50)
+            # self._train_dataset, self._val_dataset = self.reduce_data_debug(self._train_dataset, 500), \
+            #         self.reduce_data_debug(self._val_dataset, 50)
 
         if self._test_dataset is None:
             self._test_dataset = self.create_dataset(
