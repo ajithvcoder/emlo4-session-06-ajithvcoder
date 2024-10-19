@@ -27,10 +27,9 @@ jobs:
         run: |
           uv sync
       - name: Pull data from DVC
-        env:
-          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
-          echo $GDRIVE_CREDENTIALS_DATA > gdrive_credentials.json
+          echo $GDRIVE_CREDENTIALS_DATA > credentials_1.json
+          cat credentials_1.json
           uv run dvc remote modify --local myremote1 credentialpath credentials_1.json
           uv run dvc pull -v
 
