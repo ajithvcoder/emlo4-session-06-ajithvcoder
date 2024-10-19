@@ -24,6 +24,7 @@ model:
   base_model: "vit_tiny_patch16_224"
   num_classes: 2
   lr: 1e-3
+  pretrained: true
 
 trainer:
   min_epochs: 1
