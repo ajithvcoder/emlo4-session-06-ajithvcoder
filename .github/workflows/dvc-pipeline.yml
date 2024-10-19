@@ -32,7 +32,6 @@ jobs:
         env:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
-          rm -rf .dvc/cache
           uv run dvc remote list
           uv run dvc pull data -r myremote -v
 
