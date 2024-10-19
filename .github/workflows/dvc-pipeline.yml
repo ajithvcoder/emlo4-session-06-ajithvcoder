@@ -31,7 +31,7 @@ jobs:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
           rm -rf /var/tmp/dvc/repo/*
-          uv run dvc pull -v
+          uv run dvc pull data -v
 
       - name: Train model
         run: |
