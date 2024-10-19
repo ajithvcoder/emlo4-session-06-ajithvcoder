@@ -7,6 +7,11 @@ stages:
       hash: md5
       md5: 3555c2e29d7882bc51ec9297d76a161d
       size: 873
+    - path: data/cat_dog_medium
+      hash: md5
+      md5: 9240971950599e126cf0cd23a8a0279c.dir
+      size: 866190740
+      nfiles: 25002
     - path: src/train.py
       hash: md5
       md5: 553225eec1579b40ee5a0ca8ac2ef426

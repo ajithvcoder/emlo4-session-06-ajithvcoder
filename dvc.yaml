@@ -4,6 +4,7 @@ stages:
     deps:
     - configs/experiment/catdog_ex.yaml
     - src/train.py
+    - data/cat_dog_medium
   test:
     cmd: python src/eval.py --config-name=eval experiment=catdog_ex_eval
     deps:
