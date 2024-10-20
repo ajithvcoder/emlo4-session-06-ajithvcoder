@@ -145,13 +145,26 @@ Use a subset of train and test set for faster debugging and development. Also u 
 
 **Work flow success on main branch**
 
+Run details - [here](https://github.com/ajithvcoder/emlo4-session-06-ajithvcoder/actions/runs/11419499613)
+
+![main workflow](./assets/snap_main_workflow.png)
+
 **Work flow success run on PR branch**
+
+Run details - [here](https://github.com/ajithvcoder/emlo4-session-06-ajithvcoder/actions/runs/11419924207)
+
+Pull request - [here](https://github.com/ajithvcoder/emlo4-session-06-ajithvcoder/pull/2)
+
+![pr triggered workflow](./assets/snap_pr_testing.png)
 
 **Comments from cml with plots and 10 infer images**
 
+Details - [here](https://github.com/ajithvcoder/emlo4-session-06-ajithvcoder/pull/2#issuecomment-2424194445)
 
-Note: I used Google cloud Storage bucket for this project and its paid one so after successfully completing this assignment i am going
-to remote it. So you need to do the cloud setup again for re-running this experiment.
+![cml comment](./assets/snap_cml.png)
+
+
+Note: I used Google cloud Storage bucket for this project as it was faster than gdrive and its paid one so after successfully completing this assignment i am going to remove it. So you need to do the cloud setup again for re-running this experiment.
 
 ### Group Members
 
